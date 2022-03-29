@@ -29,11 +29,25 @@ class User extends uniqueFunc(Model) {
       required: ["email"],
 
       properties: {
-        email: { type: "string", format: "email" },
+        email: { type: "string" },
         cryptedPassword: { type: "string" },
       },
     };
   }
+
+  static get relationMappings() {
+    const Gift = require('./Gift.js')
+    return {
+      gifts: {
+        relation: Model.HasManyRelation,
+        modelClass: Gift,
+        join: {
+          from: 'users.id',
+          to: 'gifts.userId'
+      }
+    }
+  }
+}
 
   $formatJson(json) {
     const serializedJson = super.$formatJson(json);
